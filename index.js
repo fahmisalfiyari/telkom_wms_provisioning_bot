@@ -26,12 +26,12 @@ var myDate = current_date.getDate() + "-" + current_month + "-" + current_date.g
 //Start bot
 bot.start((ctx) => 
     ctx.reply(
-        `Semangat Pagi ${ctx.from.first_name}!!, apa yang ingin anda laporkan?`,
+        `Semangat Pagi ${ctx.from.first_name} !, apa yang ingin anda laporkan?`,
         
         //buat 1x2 matrix keyboard
         Markup.inlineKeyboard([
             Markup.callbackButton("PT1", "PT_1"),
-            Markup.callbackButton("PT2", "SUBMIT"),
+            Markup.callbackButton("PT2", "PT_2"),
             Markup.callbackButton("PT3", "PT_3")
         ]).extra()
     )
@@ -102,7 +102,7 @@ const pt1report = new WizardScene(
 
 	ctx => {
 		ctx.wizard.state.odp = ctx.message.text;
-		ctx.reply("Masukan Keterangan Tambahan (jika tidak ada, isi dengan 'kosong'");
+		ctx.reply("Masukan Keterangan Tambahan (jika tidak ada, isi dengan 'kosong')");
 		return ctx.wizard.next();
 	},
 
@@ -152,7 +152,6 @@ const pt1report = new WizardScene(
 	}
 );
 
-//PT2 Wizard
 const pt2report = new WizardScene(
 	"pt2_report",
 	ctx => {
@@ -162,12 +161,111 @@ const pt2report = new WizardScene(
 
 	ctx => {
 		ctx.wizard.state.nikTeknisi = ctx.message.text;
+		ctx.reply("Masukan Nama Venue");
+		return ctx.wizard.next();
+	},
 
-		ctx.reply('Nik anda ' + ctx.wizard.state.nikTeknisi);
+	ctx => {
+		// ctx.reply('NIK anda ' + ctx.wizard.state.nikTeknisi);
+		ctx.wizard.state.venueName = ctx.message.text;
+		ctx.reply("Masukan SCID");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		ctx.wizard.state.scid = ctx.message.text;
+		ctx.reply("Masukan SOID");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		ctx.wizard.state.soid = ctx.message.text;
+		ctx.reply("Masukan SSID");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		ctx.wizard.state.ssid = ctx.message.text;
+		ctx.reply("Masukan NDEM");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		ctx.wizard.state.ndem = ctx.message.text;
+		ctx.reply("Masukan PIC");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		ctx.wizard.state.pic = ctx.message.text;
+		ctx.reply("Masukan PIC Number");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		ctx.wizard.state.picNumber = ctx.message.text;
+		ctx.reply("Masukan Alamat");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		ctx.wizard.state.alamat = ctx.message.text;
+		ctx.reply("Masukan ODP");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		ctx.wizard.state.odp = ctx.message.text;
+		ctx.reply("Masukan Keterangan Tambahan (jika tidak ada, isi dengan 'kosong')");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		ctx.wizard.state.status = ctx.message.text;
+		ctx.reply("Masukan Lokasi (Share Location dari aplikasi Telegram)");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		if(ctx.message.location){
+			var lat =  ctx.message.location.latitude;
+			var long = ctx.message.location.longitude;
+			var map = 'https://maps.google.com/?q='+lat+','+long;
+			ctx.wizard.state.location = map;
+		}else{
+			ctx.wizard.state.location = '-';
+		}
+		https://maps.google.com/?q=<lat>,<lng>
+		submittedData = {
+			created_on 		: myDate,
+			nik_teknisi 	: ctx.wizard.state.nikTeknisi,
+			venue 			: ctx.wizard.state.venueName,
+			scid 			: ctx.wizard.state.scid,
+			soid 			: ctx.wizard.state.soid,
+			ssid 			: ctx.wizard.state.ssid,
+			ndem 			: ctx.wizard.state.ndem,
+			pic 			: ctx.wizard.state.pic,
+			pic_number 		: ctx.wizard.state.picNumber,
+			alamat 			: ctx.wizard.state.alamat,
+			odp 			: ctx.wizard.state.odp,
+			status 			: ctx.wizard.state.status,
+			location 		: ctx.wizard.state.location,
+			provisioning 	: "PT2"
+		}
+
+		// console.log(ctx.message);
+		ctx.reply('KONFIRMASI DATA :\n\nNIK TEKNISI: ' + ctx.wizard.state.nikTeknisi + '\nSITE/VENUE: ' + ctx.wizard.state.venueName + '\nSCID: ' + ctx.wizard.state.scid + '\nSOID: ' + ctx.wizard.state.soid + '\nSSID: ' + ctx.wizard.state.ssid + '\nNDEM: ' + ctx.wizard.state.ndem + '\nPIC: '+ctx.wizard.state.pic + '\nPIC Number: ' + ctx.wizard.state.picNumber + '\nALAMAT: ' +ctx.wizard.state.alamat + '\nODP: ' + ctx.wizard.state.odp + '\nKETERANGAN: '+ctx.wizard.state.status + '\nLOCATION: '+ ctx.wizard.state.location + '\nPROVISIONING TYPE: PT2'
+			,
+			Markup.inlineKeyboard([
+	            Markup.callbackButton("Submit Data", "SUBMIT"),
+	            Markup.callbackButton("Cancel", "CANCEL")
+	        ]).extra()
+			)
+
+		 return ctx.scene.leave();
 	}
 );
 
-//PT3 Wizard
 const pt3report = new WizardScene(
 	"pt3_report",
 	ctx => {
@@ -177,8 +275,109 @@ const pt3report = new WizardScene(
 
 	ctx => {
 		ctx.wizard.state.nikTeknisi = ctx.message.text;
+		ctx.reply("Masukan Nama Venue");
+		return ctx.wizard.next();
+	},
 
-		ctx.reply('Nik anda ' + ctx.wizard.state.nikTeknisi);
+	ctx => {
+		// ctx.reply('NIK anda ' + ctx.wizard.state.nikTeknisi);
+		ctx.wizard.state.venueName = ctx.message.text;
+		ctx.reply("Masukan SCID");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		ctx.wizard.state.scid = ctx.message.text;
+		ctx.reply("Masukan SOID");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		ctx.wizard.state.soid = ctx.message.text;
+		ctx.reply("Masukan SSID");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		ctx.wizard.state.ssid = ctx.message.text;
+		ctx.reply("Masukan NDEM");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		ctx.wizard.state.ndem = ctx.message.text;
+		ctx.reply("Masukan PIC");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		ctx.wizard.state.pic = ctx.message.text;
+		ctx.reply("Masukan PIC Number");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		ctx.wizard.state.picNumber = ctx.message.text;
+		ctx.reply("Masukan Alamat");
+		return ctx.wizard.next();
+	},
+
+	// ctx => {
+	// 	ctx.wizard.state.alamat = ctx.message.text;
+	// 	ctx.reply("Masukan ODP");
+	// 	return ctx.wizard.next();
+	// },
+
+	ctx => {
+		ctx.wizard.state.alamat = ctx.message.text;
+		// ctx.wizard.state.odp = ctx.message.text;
+		ctx.reply("Masukan Keterangan Tambahan (jika tidak ada, isi dengan 'kosong')");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		ctx.wizard.state.status = ctx.message.text;
+		ctx.reply("Masukan Lokasi (Share Location dari aplikasi Telegram)");
+		return ctx.wizard.next();
+	},
+
+	ctx => {
+		if(ctx.message.location){
+			var lat =  ctx.message.location.latitude;
+			var long = ctx.message.location.longitude;
+			var map = 'https://maps.google.com/?q='+lat+','+long;
+			ctx.wizard.state.location = map;
+		}else{
+			ctx.wizard.state.location = '-';
+		}
+		https://maps.google.com/?q=<lat>,<lng>
+		submittedData = {
+			created_on 		: myDate,
+			nik_teknisi 	: ctx.wizard.state.nikTeknisi,
+			venue 			: ctx.wizard.state.venueName,
+			scid 			: ctx.wizard.state.scid,
+			soid 			: ctx.wizard.state.soid,
+			ssid 			: ctx.wizard.state.ssid,
+			ndem 			: ctx.wizard.state.ndem,
+			pic 			: ctx.wizard.state.pic,
+			pic_number 		: ctx.wizard.state.picNumber,
+			alamat 			: ctx.wizard.state.alamat,
+			odp 			: ctx.wizard.state.odp,
+			status 			: ctx.wizard.state.status,
+			location 		: ctx.wizard.state.location,
+			provisioning 	: "PT3"
+		}
+
+		// console.log(ctx.message);
+		ctx.reply('KONFIRMASI DATA :\n\nNIK TEKNISI: ' + ctx.wizard.state.nikTeknisi + '\nSITE/VENUE: ' + ctx.wizard.state.venueName + '\nSCID: ' + ctx.wizard.state.scid + '\nSOID: ' + ctx.wizard.state.soid + '\nSSID: ' + ctx.wizard.state.ssid + '\nNDEM: ' + ctx.wizard.state.ndem + '\nPIC: '+ctx.wizard.state.pic + '\nPIC Number: ' + ctx.wizard.state.picNumber + '\nALAMAT: ' +ctx.wizard.state.alamat + '\nKETERANGAN: '+ctx.wizard.state.status + '\nLOCATION: '+ ctx.wizard.state.location + '\nPROVISIONING TYPE: PT3'
+			,
+			Markup.inlineKeyboard([
+	            Markup.callbackButton("Submit Data", "SUBMIT"),
+	            Markup.callbackButton("Cancel", "CANCEL")
+	        ]).extra()
+			)
+
+		 return ctx.scene.leave();
 	}
 );
 
@@ -209,7 +408,7 @@ bot.action("BACK", ctx => {
 });
 
 bot.action("SUBMIT", ctx => {
-    ctx.reply(`Submit Data...`);
+    // ctx.reply(`Submit Data...`);
     var submit = "";
     var statusReq;
     if(submit = SubmitData.postProvisioningData(submittedData)){
@@ -237,5 +436,7 @@ bot.use(session());
 bot.use(stage.middleware());
 // bot.command('greeter', (ctx) => ctx.scene.enter('greeter'));
 bot.action('PT_1', (ctx) => {Stage.enter('pt1_report')(ctx)});
+bot.action('PT_2', (ctx) => {Stage.enter('pt2_report')(ctx)});
+bot.action('PT_3', (ctx) => {Stage.enter('pt3_report')(ctx)});
 
 bot.startPolling();

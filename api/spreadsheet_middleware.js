@@ -26,8 +26,13 @@ module.exports = {
        // var url = `${BASE_URL}&tableName=${tableName}&created_on=${created_on}&nik_teknisi=${nik_teknisi}&venue=${venue}&scid=${scid}&soid=${soid}&scid=${scid}&ssid=${ssid}&ndem=${ndem}&pic=${pic}&pic_number=${pic_number}&alamat=${alamat}&odp=${odp}&status=${status}&location=${location}&provisioning=${provisioning}`;
 
        // var url = `https://script.google.com/macros/s/AKfycbwT1gIaoEmtv6wWfmoLf6BqCNvhuT3-fIITek5dEC9m17YV9hY/exec?action=insert&tableName=PT1&created_on=17-07-2019&nik_teknisi=950346&venue=my venue&scid=SCOO3&soid=SOID3&ssid=SSID3&ndem=54654654&pic=t4454 &pic_number=0856246&alamat=bara&odp=tes odp&status=tes status&location=disini&provisioning=PT17`;
-       var url = `https://script.google.com/macros/s/AKfycbwT1gIaoEmtv6wWfmoLf6BqCNvhuT3-fIITek5dEC9m17YV9hY/exec?action=insert&tableName=${provisioning}&created_on=${created_on}&nik_teknisi=${nik_teknisi}&venue=${venue}&scid=${scid}&soid=${soid}&ssid=${ssid}&ndem=${ndem}&pic=${pic}&pic_number=${pic_number}&alamat=${alamat}&odp=${odp}&status=${status}&location=${location}&provisioning=${provisioning}`;
-
+       
+       if(provisioning != 'PT3'){
+       	var url = `https://script.google.com/macros/s/AKfycbwT1gIaoEmtv6wWfmoLf6BqCNvhuT3-fIITek5dEC9m17YV9hY/exec?action=insert&tableName=${provisioning}&created_on=${created_on}&nik_teknisi=${nik_teknisi}&venue=${venue}&scid=${scid}&soid=${soid}&ssid=${ssid}&ndem=${ndem}&pic=${pic}&pic_number=${pic_number}&alamat=${alamat}&odp=${odp}&status=${status}&location=${location}&provisioning=${provisioning}`;
+       }else{
+       	var url = `https://script.google.com/macros/s/AKfycbwT1gIaoEmtv6wWfmoLf6BqCNvhuT3-fIITek5dEC9m17YV9hY/exec?action=insert&tableName=${provisioning}&created_on=${created_on}&nik_teknisi=${nik_teknisi}&venue=${venue}&scid=${scid}&soid=${soid}&ssid=${ssid}&ndem=${ndem}&pic=${pic}&pic_number=${pic_number}&alamat=${alamat}&status=${status}&location=${location}&provisioning=${provisioning}`;
+       }
+       
        return Axios.post(url);
     }
 };

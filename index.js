@@ -8,8 +8,7 @@ const WizardScene   = require('telegraf/scenes/wizard');
 const SubmitData    = require("./api/spreadsheet_middleware");
 
 //define bot_token
-const bot = new Telegraf('806635346:AAEkllJUGkC83PO5S45R9dGWCh2V5gNZ8Bo')
-// const bot 		= new Telegraf(process.env.BOT_TOKEN);
+const bot 		= new Telegraf(process.env.BOT_TOKEN);
 const BOT_TOKEN = process.env.BOT_TOKEN || "";
 
 var submittedData;
